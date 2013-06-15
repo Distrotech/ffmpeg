@@ -2332,7 +2332,11 @@ set_default host_cc
 
 if ! $pkg_config --version >/dev/null 2>&1; then
     warn "$pkg_config not found, library detection may fail."
-    pkg_config=false
+    if ! pkg-config --version >/dev/null 2>&1;then
+      pkg_config=false
+     else
+      pkg_config=pkg-config
+    fi;
 fi
 
 exesuf() {
@@ -3643,7 +3647,7 @@ enabled libcelt    && require libcelt celt/celt.h celt_decode -lcelt0 &&
                         die "ERROR: libcelt must be installed and version must be >= 0.11.0."; }
 enabled libcaca    && require_pkg_config caca caca.h caca_create_canvas
 enabled libfaac    && require2 libfaac "stdint.h faac.h" faacEncGetVersion -lfaac
-enabled libfdk_aac && require  libfdk_aac fdk-aac/aacenc_lib.h aacEncOpen -lfdk-aac
+enabled libfdk_aac && require  libfdk_aac fdk-aac/aacenc_lib.h aacEncOpen -lfdk-aac -lm
 flite_libs="-lflite_cmu_time_awb -lflite_cmu_us_awb -lflite_cmu_us_kal -lflite_cmu_us_kal16 -lflite_cmu_us_rms -lflite_cmu_us_slt -lflite_usenglish -lflite_cmulex -lflite"
 enabled libflite   && require2 libflite "flite/flite.h" flite_init $flite_libs
 enabled libfreetype && require_pkg_config freetype2 "ft2build.h freetype/freetype.h" FT_Init_FreeType
@@ -3654,7 +3658,7 @@ enabled libmp3lame && require  "libmp3lame >= 3.98.3" lame/lame.h lame_set_VBR_q
 enabled libnut     && require  libnut libnut.h nut_demuxer_init -lnut
 enabled libopencore_amrnb  && require libopencore_amrnb opencore-amrnb/interf_dec.h Decoder_Interface_init -lopencore-amrnb
 enabled libopencore_amrwb  && require libopencore_amrwb opencore-amrwb/dec_if.h D_IF_init -lopencore-amrwb
-enabled libopencv  && require_pkg_config opencv opencv/cxcore.h cvCreateImageHeader
+enabled libopencv  && require_pkg_config opencv opencv/cxcore.h cvCreateImageHeader -lopencv_core
 enabled libopenjpeg && require libopenjpeg openjpeg.h opj_version -lopenjpeg
 enabled libopus    && require_pkg_config opus opus_multistream.h opus_multistream_decoder_create
 enabled libpulse && require_pkg_config libpulse-simple pulse/simple.h pa_simple_new
