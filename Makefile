@@ -54,7 +54,6 @@ all: $(PROGS)
 
 $(PROGS): %$(EXESUF): %_g$(EXESUF)
 	$(CP) $< $@
-	$(STRIP) $@
 
 $(TOOLS): %$(EXESUF): %.o
 	$(LD) $(LDFLAGS) $(LD_O) $< $(ELIBS)
